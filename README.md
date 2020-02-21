@@ -1,17 +1,3 @@
-# Iterating Over Hashes
-
-## Objectives
-
-1. Iterate over nested, or multidimensional, hashes.
-
-
-## The Holiday Suppliers
-
-### Instructions
-
-You have a bunch of decorations for various holidays organized by season.
-
-```ruby
 holiday_supplies = {
   :winter => {
     :christmas => ["Lights", "Wreath"],
@@ -27,60 +13,82 @@ holiday_supplies = {
     :memorial_day => ["BBQ"]
   }
 }
-```
 
-Write your methods in `lib/holiday.rb`; use the comments in each method as guides.
-
-* Write a method that returns the second supply for the Fourth of July. For eg:
-
-```ruby
 def second_supply_for_fourth_of_july(holiday_supplies)
   holiday_supplies[:summer][:fourth_of_july][1]
 end
-```
 
-* Write a method that adds a supply to both Winter holidays.
+second_supply_for_fourth_of_july(holiday_supplies) #Example from Learn.co
 
-* Write a method that adds a supply to Memorial Day.
+#Write a method that adds a supply to both Winter holidays.
+def add_supply_to_winter_holidays(holiday_hash, supply)
+    holiday_hash[:winter].each do |holiday, decorations|
+        decorations << supply 
+    end
+end
+add_supply_to_winter_holidays(holiday_supplies, "Sweaters")
 
-* Write a method that adds a new holiday and its associated supplies to any season.
 
-* Write a method to collect all Winter supplies from all the winter holidays. For eg:
+#Write method adding a supply memorial day
+def add_supply_to_memorial_day(holiday_hash, supply)
+    holiday_hash[:spring][:memorial_day] << supply
+end
+add_supply_to_memorial_day(holiday_supplies, "beach toys")
 
-```bash
-winter_supplies(holiday_supplies) #=> ["Lights", "Wreath", etc]
-```
 
-* Write a method that uses a loop to list out all the supplies you have for each holiday and the season. Use string manipulation to get your output to match what the test is expecting.
+def add_new_holiday_with_supplies(holiday_hash, season, holiday_name, supply_array)
+  holiday_hash[season][holiday_name] = supply_array
+  holiday_hash
+end
+add_new_holiday_with_supplies(holiday_supplies, :summer, :my_birthday, ["cake", "candles", "pizza"])
 
-* Here are a few helpful tips:
-  * Our hash keys are symbols. We need to convert them into strings. Use the `.to_s` method on a symbol to convert it into a string.
-  * Look closely at the output string that the test is expecting. You'll notice that it expects holiday names, like "New Years", to have both words capitalized. Ruby has a `.capitalize` method that you can call on a string. **But, note:**
-    * `.capitalize` returns the capitalized string but *doesn't change* the original string. So, when you call on that same string in the future, it *isn't capitalized!* You can capitalize a string for now and evermore by using the bang operator (`!`).
-    * You'll need to capitalize *both words* in a given holiday's name. If you call `"new years".capitalize!`, it will return `"New years"`. In order to capitalize *both* words, you'll need to `.split` the string into an array and iterate over that array to `.capitalize!` each word in it. Then, you'll need to `.join` the array back into a string.
-    * If you're unfamiliar with the methods mentioned above, look them up in the Ruby documentation.
 
-Example of expected output:
 
-```
-Winter:
-  Christmas: Lights, Wreath
-  New Years: Party Hats
-```
 
-* Write a method to collect all holidays with "BBQ" in the supply array. The method should behave as seen below:
 
-```bash
+
+def all_winter_holiday_supplies(holiday_hash) #get all winter supplies
+    holiday_hash[:winter].values.flatten
+end
+all_winter_holiday_supplies(holiday_supplies)
+
+
+
+
+
+
+def all_supplies_in_holidays(holiday_hash)
+    holiday_hash.each do |season, celebration|
+        puts "#{season.capitalize}:"
+        celebration.each do |celebration, item|
+            puts "  #{celebration.to_s.split("_").map {|i| i.capitalize}.join(" ")}: #{item.join(", ")}"
+        end
+    end
+end
+all_supplies_in_holidays(holiday_supplies)
+#What's going on here...
+#for each celebration and item, 
+#turn the celebration (like new years for example) into a string, and split it on any underscore
+#now new years is an array of 2 strings ["new", "years"]. 
+#Now, using map which will make a new array, we say for every index (every word in this case), we capitalize it
+#We then turn that back into a string. 
+#Then we just add on the item, making sure to join it into a string on a comma 
+
+
+
+
+#Write a method to collect all holidays with "BBQ" in the supply array. The method should behave as seen below:
+def holidays_with_bbqs(holiday_hash)
+    holiday_hash.map do |season, celebration|
+        celebration.map do |celebration, item|
+            if item.include?("BBQ")
+                celebration
+            end
+        end
+    end.flatten.compact #compact returns a copy of itself with all nil elements removed. 
+    #flatten reduces an array to one dimension. #help! 
+end
 holidays_with_bbqs(holiday_supplies)
-#=> [:fourth_of_july, :memorial_day]
-```
-
-**Reminder:** This is a challenging lab, so remember to use Pry, Google, and the Learn community to help you get the tests passing.
-
-## Resources
-
-- [StackOverflow: Accessing Elements of Nested Hashes in Ruby](http://stackoverflow.com/questions/5544858/accessing-elements-of-nested-hashes-in-ruby)
-- [honeybadger - Advanced Ruby Hash Techniques](http://blog.honeybadger.io/advanced-ruby-hash-techniques/)
 
 
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/apples-and-holidays' title='Iterating Over Hashes'>Iterating Over Hashes</a> on Learn.co and start learning to code for free.</p>
+        
