@@ -14,6 +14,10 @@ holiday_supplies = {
   }
 }
 
+def second_supply_for_fourth_of_july(holiday_supplies)
+  holiday_supplies[:summer][:fourth_of_july][1]
+end
+second_supply_for_fourth_of_july(holiday_supplies)
 
 #Write a method that adds a supply to both Winter holidays.
 def add_supply_to_winter_holidays(holiday_hash, supply)
