@@ -77,7 +77,7 @@ all_supplies_in_holidays(holiday_supplies)
 
 
 #Write a method to collect all holidays with "BBQ" in the supply array. The method should behave as seen below:
-def holidays_with_bbqs(holiday_hash)
+def all_holidays_with_bbq(holiday_hash)
     holiday_hash.map do |season, celebration|
         celebration.map do |celebration, item|
             if item.include?("BBQ")
@@ -87,7 +87,7 @@ def holidays_with_bbqs(holiday_hash)
     end.flatten.compact #compact returns a copy of itself with all nil elements removed. 
     #flatten reduces an array to one dimension. #help! 
 end
-holidays_with_bbqs(holiday_supplies)
+all_holidays_with_bbq(holiday_supplies)
 
 
         
